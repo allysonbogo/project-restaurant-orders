@@ -7,7 +7,6 @@ class MenuData:
     def __init__(self, source_path: str) -> None:
         self.dishes = set()
         self.load(source_path)
-        self.add_ingredients(source_path)
 
     def __iter__(self):
         return iter(self.dishes)
@@ -24,12 +23,6 @@ class MenuData:
                 dish = Dish(row[0], float(row[1]))
                 self.dishes.add(dish)
 
-    def add_ingredients(self, source_path):
-        with open(source_path, "r") as file:
-            reader = csv.reader(file)
-            next(reader)
-
-            for row in reader:
                 for dish in self.dishes:
                     if dish == Dish(row[0], float(row[1])):
                         dish.add_ingredient_dependency(
