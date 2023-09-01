@@ -12,6 +12,12 @@ class MenuBuilder:
         self.menu_data = MenuData(data_path)
         self.inventory = InventoryMapping(inventory_path)
 
+    def __iter__(self):
+        return iter(self.menu_data)
+
+    def __str__(self) -> str:
+        return f"{self.menu_data}"
+
     def make_order(self, dish_name: str) -> None:
         try:
             curr_dish = [
@@ -24,6 +30,18 @@ class MenuBuilder:
 
         self.inventory.consume_recipe(curr_dish.recipe)
 
-    # Req 4
     def get_main_menu(self, restriction=None) -> List[Dict]:
-        pass
+        dishes = []
+
+        for dish in self.menu_data:
+            dish_info = {
+                "dish_name": dish.name,
+                "ingredients": dish.get_ingredients(),
+                "price": dish.price,
+                "restrictions": dish.get_restrictions(),
+            }
+
+            if restriction not in dish.get_restrictions():
+                dishes.append(dish_info)
+
+        return dishes
