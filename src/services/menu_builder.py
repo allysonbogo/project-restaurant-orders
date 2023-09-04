@@ -41,7 +41,10 @@ class MenuBuilder:
                 "restrictions": dish.get_restrictions(),
             }
 
-            if restriction not in dish.get_restrictions():
+            if (
+                self.inventory.check_recipe_availability(dish.recipe) is True
+                and restriction not in dish.get_restrictions()
+            ):
                 dishes.append(dish_info)
 
         return dishes
