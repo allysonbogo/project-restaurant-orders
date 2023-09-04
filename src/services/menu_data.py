@@ -17,14 +17,20 @@ class MenuData:
         return f"{self.dishes}"
 
     def read_csv_menu(self, data_path=DATA_PATH) -> None:
+        temp_dishes = {}
+
         with open(data_path, encoding="utf-8") as file:
             for row in DictReader(file):
-                dish = Dish(row["dish"], float(row["price"]))
-                self.dishes.add(dish)
+                dish_key = (row["dish"], float(row["price"]))
 
-                for dish in self.dishes:
-                    if dish == Dish(row["dish"], float(row["price"])):
-                        dish.add_ingredient_dependency(
-                            Ingredient(row["ingredient"]),
-                            int(row["recipe_amount"]),
-                        )
+                if dish_key not in temp_dishes:
+                    dish = Dish(row["dish"], float(row["price"]))
+                    temp_dishes[dish_key] = dish
+                    self.dishes.add(dish)
+                else:
+                    dish = temp_dishes[dish_key]
+
+                dish.add_ingredient_dependency(
+                    Ingredient(row["ingredient"]),
+                    int(row["recipe_amount"]),
+                )
