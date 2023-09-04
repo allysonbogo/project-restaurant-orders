@@ -1,12 +1,14 @@
 from models.ingredient import Ingredient
 from models.dish import Dish
-import csv
+from csv import DictReader
+
+DATA_PATH = "data/menu_base_data.csv"
 
 
 class MenuData:
-    def __init__(self, source_path: str) -> None:
+    def __init__(self, data_path=DATA_PATH) -> None:
         self.dishes = set()
-        self.load(source_path)
+        self.read_csv_menu(data_path)
 
     def __iter__(self):
         return iter(self.dishes)
@@ -14,17 +16,15 @@ class MenuData:
     def __str__(self) -> str:
         return f"{self.dishes}"
 
-    def load(self, source_path: str) -> None:
-        with open(source_path, "r") as file:
-            reader = csv.reader(file)
-            next(reader)
-
-            for row in reader:
-                dish = Dish(row[0], float(row[1]))
+    def read_csv_menu(self, data_path=DATA_PATH) -> None:
+        with open(data_path, encoding="utf-8") as file:
+            for row in DictReader(file):
+                dish = Dish(row["dish"], float(row["price"]))
                 self.dishes.add(dish)
 
                 for dish in self.dishes:
-                    if dish == Dish(row[0], float(row[1])):
+                    if dish == Dish(row["dish"], float(row["price"])):
                         dish.add_ingredient_dependency(
-                            Ingredient(row[2]), int(row[3])
+                            Ingredient(row["ingredient"]),
+                            int(row["recipe_amount"]),
                         )
