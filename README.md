@@ -38,7 +38,7 @@ Neste projeto, o objetivo foi finalizar uma ferramenta de construção de cardá
 </details>
 
 
-## ⚙️ Funcionalidades
+## 📂 Funcionalidades
 
 O algoritmo desenvolvido neste projeto conta com módulos para a gestão de pratos e receitas de um restaurante, a construção de cardápios considerando restrições alimentares e a verificação da disponibilidade de ingredientes no estoque.
 
